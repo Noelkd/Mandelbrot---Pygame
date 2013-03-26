@@ -10,7 +10,6 @@ def exit_game():
 	sys.exit()
 
 def run_game():
-	SCREEN_WIDTH, SCREEN_HEIGHT = 800, 600
 	BG_COLOR = 0, 0, 0
 	PX_COLOR = 225, 200, 200
 	
