@@ -21,6 +21,7 @@ def run_game():
 	MAX_ITERTIONS = 30
 	pygame.init()
 	screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT), 0, 32)
+	pygame.display.set_caption("MENDEL VIEWER")
 	pygame.display.flip()
 	MinRe = -2.0
 	MaxRe = 1.0
