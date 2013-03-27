@@ -32,11 +32,11 @@ def run_game():
 
 	get_c_re = lambda x: MinRe + x * Re_factor
 	get_c_im = lambda y: MaxIm - y * Im_factor
-	image = Image.new("L",(WINDOW_WIDTH, WINDOW_HEIGHT), "white")
-	for y in range(1, WINDOW_HEIGHT+1):
+	image = Image.new("RGB",(WINDOW_WIDTH, WINDOW_HEIGHT), "black")
+	for y in range(1, WINDOW_HEIGHT):
 		c_im = get_c_im(y)
 		#print "c_im:" + str(c_im)
-		for x in range(1, WINDOW_WIDTH+1):
+		for x in range(1, WINDOW_WIDTH):
 			c_re = get_c_re(x)
 			#print "c_re:" + str(c_re) 
 			Z_re = c_re
@@ -51,8 +51,11 @@ def run_game():
 					break
 				Z_im = 2 * Z_re * Z_im + c_im
 				Z_re = Z_re2 - Z_im2 + c_re
+			
 			if isInside:
-				image.putpixel((int(x), int(y)), 225)
+				image.putpixel((x, y), (255,255,255))
+			else:
+				image.putpixel((x, y), (n*40,n*5,n*29))
 
 	image.save(cwd+"\\tmp.BMP", "BMP")
 	image_surf = pygame.image.load("tmp.BMP").convert()
