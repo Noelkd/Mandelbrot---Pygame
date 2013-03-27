@@ -18,8 +18,20 @@ def run_game():
 	pygame.init()
 	screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT), 0, 32)
 	pygame.display.set_caption("MENDEL VIEWER")
-	pygame.display.flip()
+	loading_screen = pygame.Surface(screen.get_size())
+	loading_screen = loading_screen.convert()
+	loading_screen.fill((0, 0, 0))
 
+	font = pygame.font.Font(None, 36)
+	text = font.render("Loading....", 1, (225, 225, 225))
+	textpos = text.get_rect()
+	textpos.centerx = WINDOW_WIDTH / 2
+	textpos.centery = WINDOW_HEIGHT / 2
+	
+	loading_screen.blit(text, textpos)
+	screen.blit(loading_screen,(0,0))
+	pygame.display.flip()
+	
 	MAX_ITERTIONS = 30
 	MinRe = -2.0
 	MaxRe = 1.0
