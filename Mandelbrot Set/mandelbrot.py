@@ -8,8 +8,10 @@ import os
 cwd = os.getcwd()
 
 def exit_game():
-	os.remove("tmp.BMP")
 	sys.exit()
+
+def save_image(image):
+	image.save(cwd+"\\tmp.BMP", "BMP")
 
 def run_game():
 
@@ -67,12 +69,12 @@ def run_game():
 				Z_re = Z_re2 - Z_im2 + c_re
 
 			if isInside:
-				image.putpixel((x, y), (255,255,255))
+				image.putpixel((x, y), (int(255/n),255,255))
 			else:
-				image.putpixel((x, y), (n*40,n*5,n*29))
+				image.putpixel((x, y), (int(225/n),0,0))
 
-	image.save(cwd+"\\tmp.BMP", "BMP")
-	image_surf = pygame.image.load("tmp.BMP").convert()
+	
+	image_surf = pygame.image.frombuffer(image.tostring(), image.size, image.mode)
 
 	while True:
 
