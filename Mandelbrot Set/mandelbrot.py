@@ -74,11 +74,13 @@ class MandelBrot(object):
 					Z_im = 2 * Z_re * Z_im + c_im
 					Z_re = Z_re2 - Z_im2 + c_re
 
+				x = x - self.x_offset
+				y = y - self.y_offset
 				if isInside:
-					surface.fill((225,225,225),(x-self.x_offset,y-self.y_offset,x-self.x_offset,y-self.y_offset))
+					surface.fill((225,225,225),(x,y,x,y))
 
 				else:
-					surface.fill((int(225/n),1,0),(x-self.x_offset,y-self.y_offset,x-self.x_offset,y-self.y_offset))
+					surface.fill((int(225/n),1,0),(x,y,x,y))
 		return surface
 
 
@@ -112,10 +114,16 @@ def run_game():
 				mandel_maker.y_offset -= 50
 				surface = mandel_maker.get_surface(surface)
 			elif event.type == pygame.KEYDOWN and event.key == pygame.K_LEFT:
-				mandel_maker.x_offset -= 50
+				mandel_maker.x_offset += 50
 				surface = mandel_maker.get_surface(surface)
 			elif event.type == pygame.KEYDOWN and event.key == pygame.K_RIGHT:
-				mandel_maker.x_offset += 50
+				mandel_maker.x_offset -= 50
+				surface = mandel_maker.get_surface(surface)
+			elif event.type == pygame.KEYDOWN and event.key == pygame.K_KP_MINUS:
+				mandel_maker.max_iter -= 10
+				surface = mandel_maker.get_surface(surface)
+			elif event.type == pygame.KEYDOWN and event.key == pygame.K_KP_PLUS:
+				mandel_maker.max_iter += 10
 				surface = mandel_maker.get_surface(surface)
 
 		screen.blit(surface,(0,0))
