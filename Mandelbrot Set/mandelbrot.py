@@ -35,18 +35,29 @@ class MandelBrot(object):
 		self.MinRe = MinRe
 		self.MaxRe = MaxRe
 		self.MinIm = MinIm
-		self.MaxIm = MinIm + (MaxRe-MinRe) * window_height / window_width
-		self.Re_factor = (MaxRe - MinRe) / (window_width - 1)
-		self.Im_factor = (self.MaxIm - MinIm) / (window_height - 1)
+		self.MaxIm = self.MinIm + (self.MaxRe-self.MinRe) * self.window_height / self.window_width
+		self.Re_factor = (self.MaxRe - self.MinRe) / (self.window_width - 1)
+		self.Im_factor = (self.MaxIm - self.MinIm) / (self.window_height - 1)
+		self.get_c_re = lambda x: self.MinRe + x * self.Re_factor
+		self.get_c_im = lambda y: self.MaxIm - y * self.Im_factor
+		self.x_offset = 0
+		self.y_offset = 0
+	
+	def recalc(self):
+		self.MaxIm = self.MinIm + (self.MaxRe-self.MinRe) * self.window_height / self.window_width
+		self.Re_factor = (self.MaxRe - self.MinRe) / (self.window_width - 1)
+		self.Im_factor = (self.MaxIm - self.MinIm) / (self.window_height - 1)
 		self.get_c_re = lambda x: self.MinRe + x * self.Re_factor
 		self.get_c_im = lambda y: self.MaxIm - y * self.Im_factor
 	
+	
 	def get_surface(self, surface):
-		
-		for y in range(1, self.window_height):
+		print self.Re_factor, self.Im_factor,self.MinRe,self.MaxRe
+		self.recalc()
+		for y in range(1+self.y_offset, self.window_height+self.y_offset):
 			c_im = self.get_c_im(y)
 
-			for x in range(1, self.window_width):
+			for x in range(1+self.x_offset, self.window_width+self.x_offset):
 				c_re = self.get_c_re(x)
 				Z_re = c_re
 				Z_im = c_im
@@ -64,10 +75,10 @@ class MandelBrot(object):
 					Z_re = Z_re2 - Z_im2 + c_re
 
 				if isInside:
-					surface.fill((225,225,225),(x,y,x,y))
+					surface.fill((225,225,225),(x-self.x_offset,y-self.y_offset,x-self.x_offset,y-self.y_offset))
 
 				else:
-					surface.fill((int(225/n),1,0),(x,y,x,y))
+					surface.fill((int(225/n),1,0),(x-self.x_offset,y-self.y_offset,x-self.x_offset,y-self.y_offset))
 		return surface
 
 
@@ -95,10 +106,16 @@ def run_game():
 			if event.type == pygame.QUIT:
 				exit_game()
 			elif event.type == pygame.KEYDOWN and event.key == pygame.K_UP:
-				mandel_maker.max_iter += 5
+				mandel_maker.y_offset += 50
 				surface = mandel_maker.get_surface(surface)
 			elif event.type == pygame.KEYDOWN and event.key == pygame.K_DOWN:
-				mandel_maker.max_iter -= 5
+				mandel_maker.y_offset -= 50
+				surface = mandel_maker.get_surface(surface)
+			elif event.type == pygame.KEYDOWN and event.key == pygame.K_LEFT:
+				mandel_maker.x_offset -= 50
+				surface = mandel_maker.get_surface(surface)
+			elif event.type == pygame.KEYDOWN and event.key == pygame.K_RIGHT:
+				mandel_maker.x_offset += 50
 				surface = mandel_maker.get_surface(surface)
 
 		screen.blit(surface,(0,0))
